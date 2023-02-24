@@ -18,12 +18,13 @@ class Circuit
     void startUml(std::ostream&);
     void endUml(std::ostream&);
 		
+
 	private:
 		uint64_t m_current_time;
     std::vector<Gate*> m_gates;
     std::vector<Wire*> m_wires;
 		// we need to add the m_pq data member. It should be a min-heap of Event*;
-        
+    Heap <Event*, EventLess> m_pq;
 };
 
 #endif

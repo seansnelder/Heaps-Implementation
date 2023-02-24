@@ -72,6 +72,7 @@ void llpivot(Node *&head, Node *&smaller, Node *&larger, int pivot);
 template <typename Comp>
 Node* llfilter(Node* head, Comp pred);
 
+//pred returns true if a node (based on its value) should be removed
 //*****************************************************************************
 // Since template implementations should be in a header file, we will
 // implement the above function now.
@@ -80,10 +81,25 @@ Node* llfilter(Node* head, Comp pred);
 template <typename Comp>
 Node* llfilter(Node* head, Comp pred)
 {
-    //*********************************************
-    // Provide your implementation below
-    //*********************************************
+     if(head == NULL){
+        return head; 
+     }
 
+     if(pred(head->val)){ //pred returns true if node should be removed! 
+    Node* newhead = head; 
+     newhead = head->next;  
+     
+     delete head; 
+    head = NULL; //deallocating current node
+     return llfilter(newhead, pred); //newhead points to the next node
+     }
+     else if(!pred(head->val)){ //pred returns false, node doesn't need to be removed
+     //
+    Node *newhead = head->next;  
+    head->next = llfilter(newhead,pred);
+    return head; 
+    }
+    
 
 }
 
