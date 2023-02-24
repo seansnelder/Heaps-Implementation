@@ -94,7 +94,7 @@ NotGate::NotGate(Wire* a, Wire* o) : Gate(1,o)
 
 /*It should implement the following truth table:
 NOT('X') -> 'X', NOT('0') -> '1', NOT('1') -> '0'*/
-
+wireInput(0,a); 
 
 
 
@@ -108,14 +108,15 @@ Event* NotGate::update(uint64_t current_time){
 
 	for(auto w:m_inputs){
 		char in = w->getState();
-		if(in == '1')
+		
+		if(in == '0'){
+			state = '1';
+			break; 
+		}
+		else if(in == '1')
 		{
 			state = '0';
 			break;
-		}
-		else if(in == '0'){
-			state = '1';
-			break; 
 		}
 		else if(in == 'X')
 		{

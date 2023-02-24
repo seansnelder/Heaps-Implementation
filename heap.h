@@ -23,6 +23,7 @@ public:
   
   
   
+
   //Heap(int m, PComparator c = PComparator()); 
 
 
@@ -38,6 +39,9 @@ public:
    * @param item item to heap
    */
   void push(const T& item);
+
+  
+  void trickledown(int index); 
 
   /**
    * @brief Returns the top (priority) item
@@ -67,6 +71,8 @@ public:
    * 
    */
   size_t size() const;
+
+
   
 
 private:
@@ -88,7 +94,8 @@ PComparator c;
 template <typename T, typename PComparator>
 Heap<T, PComparator>::Heap(int m, PComparator c)
 {
-
+  size_ = m;
+  this->c = c;
 }
 
 template <typename T, typename PComparator> //look at later
@@ -195,40 +202,99 @@ void Heap<T,PComparator>::pop()
     }
 
     std::swap(data[0], data[data.size() - 1]); 
-    data.pop_back(); 
+    data.pop_back();
 
-    int p = 0; 
-    int prioritychild = 0;
-    int first = 0; 
-    T priorityelement = data[0]; 
-    while(size_*p + 1 < data.size()){
-      first = size_*p + 1; 
-      prioritychild = first; 
+    trickledown(0);  
 
-        for(int i = first; i < size_*p + size_; ++i){
+    // int p = 0; 
+    // int prioritychild = 0;
+    // int first = 0; 
+    // T priorityelement = data[0]; 
+    // while(size_*p + 1 < data.size()){
+    //   first = size_*p + 1; 
+    //   prioritychild = first; 
+
+    //     for(int i = first; i < size_*p + size_; ++i){
+    //       if (i < data.size()){
+    //           if (c(data[i], priorityelement)){
+    //             priorityelement = data[i]; 
+    //             prioritychild = i; 
+    //           }
+    //       }
+    //       else{
+    //         break; 
+    //       }
+    //     } 
+       
+    // if(c(data[p], data[prioritychild])){
+    //   break;
+    // }
+    // else{
+    //   std::swap(data[p], data[prioritychild]); 
+    // }
+    // //update p, stored in max child
+    // p = prioritychild; 
+
+}
+template <typename T, typename PComparator>
+void Heap<T,PComparator>::trickledown(int index){
+
+      if(size_*index + 1 < data.size()){
+
+      int prioritychild = size_*index + 1; 
+      int first = size_*index + 1;
+      // T priorityelement = data[first]; 
+       
+      // prioritychild = first; 
+
+      for(unsigned int i = first; i <= size_*index + size_; i++){
           if (i < data.size()){
-              if (c(data[i], priorityelement)){
-                priorityelement = data[i]; 
+              if (c(data[i], data[prioritychild])){
+                // priorityelement = data[i]; 
                 prioritychild = i; 
               }
           }
-          else{
-            break; 
-          }
-        } 
-       
-    if(c(data[p], data[prioritychild])){
-      break;
+     }
+
+     if(c(data[index], data[prioritychild])){
+      return;
     }
     else{
-      std::swap(data[p], data[prioritychild]); 
-    }
-    //update p, stored in max child
-    p = prioritychild; 
-}
-}
+       std::swap(data[index], data[prioritychild]); 
+        index = prioritychild; 
+       trickledown(index); 
 
-/*trickle down(); */
+    }
+
+      }
+
+    else{ 
+        return; 
+      }
+      
+      
+     
+
+}
+/*trickle down(index); 
+1) get smaller child, nc
+2) loop through children
+3) swap
+4) trickledown(p)
+*/
+
+
+
+
+
+
+//pop, 
+// 1) first ->last
+//2) pop last 3) trickle down(o)
+
+
+
+
 
 
 
